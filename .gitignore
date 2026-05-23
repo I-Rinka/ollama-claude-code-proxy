@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Conda
+miniconda3/
+anaconda3/
+
+# Model files (never commit these)
+*.bin
+*.safetensors
+*.gguf
+*.pt
+*.pth
+
+# Logs
+*.log
+
+# Environment / secrets
+.env
+.env.*
+credentials.json
