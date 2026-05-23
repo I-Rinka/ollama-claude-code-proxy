@@ -91,13 +91,100 @@ Then restart Claude Code and you're ready to go!
 
 ```
 ollama-anthropic-proxy/
-├── anthropic_proxy.py   # The API proxy server (main code)
-├── start_proxy.sh       # Startup script (handles conda + proxy env)
-├── gpu_test.py          # GPU benchmark script (PyTorch test)
-├── requirements.txt     # Python dependencies
-├── README.md            # This file
-├── LICENSE              # MIT License
-└── .gitignore           # Git ignore rules
+├── anthropic_proxy.py      # The API proxy server (main code)
+├── start_proxy.sh          # Foreground startup script
+├── start_background.sh     # Background start/stop/status manager
+├── gpu_test.py             # GPU benchmark script (PyTorch test)
+├── requirements.txt        # Python dependencies
+├── README.md               # This file
+├── LICENSE                 # MIT License
+└── .gitignore              # Git ignore rules
+```
+
+## Proxy Management
+
+The proxy can be run in the background (recommended) or foreground.
+
+### Background mode (recommended)
+
+```bash
+# Start the proxy
+bash ~/ollama-anthropic-proxy/start_background.sh start
+
+# Check if it is running
+bash ~/ollama-anthropic-proxy/start_background.sh status
+
+# Stop the proxy
+bash ~/ollama-anthropic-proxy/start_background.sh stop
+```
+
+The proxy runs in the background via `nohup`. A PID file is stored at `~/ollama-anthropic-proxy/.proxy.pid` and logs are written to `~/ollama-anthropic-proxy/proxy.log`.
+
+### View logs
+
+```bash
+tail -f ~/ollama-anthropic-proxy/proxy.log
+```
+
+### Foreground mode
+
+```bash
+bash ~/ollama-anthropic-proxy/start_proxy.sh
+```
+
+This runs the proxy in the current terminal — useful for debugging. Press `Ctrl+C` to stop.
+
+## Ollama Model Management
+
+### Load (pull) a model
+
+```bash
+# Recommended model for 24-32GB VRAM
+ollama pull qwen3:30b-a3b
+
+# Smaller model for 8-16GB VRAM
+ollama pull qwen3:8b
+
+# Other useful models
+ollama pull llama3.1:8b
+ollama pull deepseek-coder-v2:16b
+```
+
+### List downloaded models
+
+```bash
+ollama list
+```
+
+### Show currently loaded models (in VRAM)
+
+```bash
+ollama ps
+```
+
+### Remove a model
+
+```bash
+ollama rm <model-name>
+# e.g. ollama rm qwen3:8b
+```
+
+### Ollama service control
+
+Ollama runs as a systemd service. Manage it with:
+
+```bash
+# Start / stop / restart
+sudo systemctl start ollama
+sudo systemctl stop ollama
+sudo systemctl restart ollama
+
+# Check service status
+sudo systemctl status ollama
+
+# Enable / disable auto-start on boot
+sudo systemctl enable ollama
+sudo systemctl disable ollama
 ```
 
 ## Configuration
